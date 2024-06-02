@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import RecipeList from '../components/RecipeList';
+import RecipeList from '../RecipeList';
 import { getRecipes } from '../services/recipeService';
 
 const RecipePage = () => {
