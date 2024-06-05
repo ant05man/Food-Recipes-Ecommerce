@@ -1,12 +1,22 @@
-// src/components/pages/Home.js
-import React from 'react';
+// Homepage.js
 
-const Home = () => {
+import React from 'react';
+import { Link } from 'react-router-dom';
+
+const Homepage = () => {
   return (
     <div>
-      <h1>Home Page</h1>
+      <h1>Welcome to My Recipe App</h1>
+      <nav>
+        <ul>
+          <li>
+            <Link to="/mealplanner">Meal Planner</Link>
+          </li>
+          {/* Add more navigation links */}
+        </ul>
+      </nav>
     </div>
   );
 };
 
-export default Home;
+export default Homepage;
