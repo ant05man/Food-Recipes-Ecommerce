@@ -12,14 +12,19 @@ const app = express();
 
 app.use(express.json());
 
-// Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true,
-})
-.then(() => console.log('MongoDB connected')) // Log MongoDB connection success
-.catch(err => console.error('MongoDB connection error:', err)); // Log MongoDB connection error
+});
+
+mongoose.connection.on('connected', () => {
+  console.log('MongoDB connected');
+});
+
+mongoose.connection.on('error', (err) => {
+  console.error(`MongoDB connection error: ${err}`);
+});
 
 // API routes
 app.use('/api/auth', authRoutes);
@@ -37,6 +42,6 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001; // Changed from 5000 to 5001
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
