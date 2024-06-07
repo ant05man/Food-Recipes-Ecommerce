@@ -14,64 +14,71 @@ router.get('/', async (req, res) => {
   }
 });
 
+// Get a single recipe
+router.get('/:id', async (req, res) => {
+  try {
+    const recipe = await Recipe.findById(req.params.id);
+    if (!recipe) {
+      return res.status(404).json({ message: 'Recipe not found' });
+    }
+    res.json(recipe);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
 // Create a new recipe
 router.post('/', async (req, res) => {
-  const recipe = new Recipe(req.body);
+  const { name, ingredients, instructions, user } = req.body;
+
+  // Create a new recipe object
+  const newRecipe = new Recipe({
+    name,
+    ingredients,
+    instructions,
+    user
+  });
+
   try {
-    const newRecipe = await recipe.save();
-    res.status(201).json(newRecipe);
+    // Save the new recipe to the database
+    const createdRecipe = await newRecipe.save();
+    res.status(201).json(createdRecipe);
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
 });
 
-// Get one recipe
-router.get('/:id', getRecipe, (req, res) => {
-  res.json(res.recipe);
-});
-
-// Update one recipe
-router.patch('/:id', getRecipe, async (req, res) => {
-  if (req.body.name != null) {
-    res.recipe.name = req.body.name;
-  }
-  if (req.body.ingredients != null) {
-    res.recipe.ingredients = req.body.ingredients;
-  }
-  if (req.body.instructions != null) {
-    res.recipe.instructions = req.body.instructions;
-  }
+// Update a recipe
+router.patch('/:id', async (req, res) => {
   try {
-    const updatedRecipe = await res.recipe.save();
+    const recipe = await Recipe.findById(req.params.id);
+    if (!recipe) {
+      return res.status(404).json({ message: 'Recipe not found' });
+    }
+    // Update the recipe fields
+    recipe.name = req.body.name || recipe.name;
+    recipe.ingredients = req.body.ingredients || recipe.ingredients;
+    recipe.instructions = req.body.instructions || recipe.instructions;
+    // Save the updated recipe
+    const updatedRecipe = await recipe.save();
     res.json(updatedRecipe);
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
 });
 
-// Delete one recipe
-router.delete('/:id', getRecipe, async (req, res) => {
+// Delete a recipe
+router.delete('/:id', async (req, res) => {
   try {
-    await res.recipe.remove();
+    const recipe = await Recipe.findById(req.params.id);
+    if (!recipe) {
+      return res.status(404).json({ message: 'Recipe not found' });
+    }
+    await recipe.remove();
     res.json({ message: 'Recipe deleted' });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 });
-
-async function getRecipe(req, res, next) {
-  let recipe;
-  try {
-    recipe = await Recipe.findById(req.params.id);
-    if (recipe == null) {
-      return res.status(404).json({ message: 'Cannot find recipe' });
-    }
-  } catch (err) {
-    return res.status(500).json({ message: err.message });
-  }
-
-  res.recipe = recipe;
-  next();
-}
 
 module.exports = router;
