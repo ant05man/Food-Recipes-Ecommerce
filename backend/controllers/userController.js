@@ -1,24 +1,15 @@
 // userController.js
 const User = require('../models/User');
 
-const getUserProfile = async (req, res) => {
+const getAllUsers = async (req, res) => {
   try {
-    // Find the user by ID
-    const user = await User.findById(req.user.userId);
-
-    // Check if the user exists
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-
-    // Return the user profile
-    res.status(200).json(user);
+    const users = await User.find();
+    res.status(200).json(users);
   } catch (error) {
-    // Handle errors
     res.status(500).json({ message: error.message });
   }
 };
 
 module.exports = {
-  getUserProfile,
+  getAllUsers,
 };
