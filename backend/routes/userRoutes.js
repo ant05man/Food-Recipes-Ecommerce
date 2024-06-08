@@ -1,14 +1,13 @@
-// routes/userRoutes.js
-
+// userRoutes.js
 const express = require('express');
 const router = express.Router();
-const { getAllUsers, getUserById, createUser, updateUser, deleteUser } = require('../controllers/userController'); // Correct import
+const { getUserProfile, getAllUsers } = require('../controllers/userController'); // Ensure correct import paths
+const { protect } = require('../middleware/authMiddleware'); // Ensure correct import
 
-// Define your routes here
-router.get('/', getAllUsers); // Ensure this function is defined and correctly imported
-router.get('/:id', getUserById); // Ensure this function is defined and correctly imported
-router.post('/', createUser); // Ensure this function is defined and correctly imported
-router.patch('/:id', updateUser); // Ensure this function is defined and correctly imported
-router.delete('/:id', deleteUser); // Ensure this function is defined and correctly imported
+// Route to get the user profile
+router.get('/profile', protect, getUserProfile);
+
+// Route to get all users
+router.get('/', getAllUsers);
 
 module.exports = router;
