@@ -3,6 +3,7 @@
 const express = require('express');
 const router = express.Router();
 const Recipe = require('../models/Recipe');
+const { restart } = require('nodemon');
 
 // Get all recipes
 router.get('/', async (req, res) => {
@@ -22,11 +23,15 @@ router.post('/', async (req, res) => {
   console.log('Received POST request for /api/recipes', req.body);
   const { name, ingredients, instructions, user } = req.body;
 
+  if (!name || !instructions || !ingredients) {
+    return res.status(400).json({ message: "Name, ingredients, and instructions are required."});
+  }
+
   const newRecipe = new Recipe({
     name,
     ingredients,
     instructions,
-    user
+    user: user || new Mongoose.Types.ObjectId()
   });
 
   try {
