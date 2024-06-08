@@ -14,6 +14,7 @@ router.get('/', async (req, res) => {
 
 // Create a new recipe
 router.post('/', async (req, res) => {
+  console.log('Request Body:', req.body);
   const { name, ingredients, instructions, user } = req.body;
 
   if (!name || !instructions || !ingredients || !user) {
