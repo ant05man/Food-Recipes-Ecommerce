@@ -1,15 +1,17 @@
-// userController.js
-const User = require('../models/User');
-
-const getAllUsers = async (req, res) => {
+const getUserProfile = async (req, res) => {
   try {
-    const users = await User.find();
-    res.status(200).json(users);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+    // Fetch user profile logic
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 };
 
-module.exports = {
-  getAllUsers,
+const getAllUsers = async (req, res) => {
+  try {
+    // Fetch all users logic
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 };
+
+module.exports = { getUserProfile, getAllUsers };
