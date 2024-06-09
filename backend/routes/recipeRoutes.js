@@ -1,5 +1,3 @@
-// routes/recipeRoutes.js
-
 const express = require('express');
 const router = express.Router();
 const Recipe = require('../models/Recipe');
@@ -13,7 +11,7 @@ router.get('/', async (req, res) => {
     res.json(recipes);
   } catch (err) {
     console.error('Error fetching recipes:', err);
-    res.status(500).json({ message: err.message });
+    res.status(500).json({ message: 'Failed to fetch recipes', error: err.message });
   }
 });
 
@@ -40,7 +38,7 @@ router.post('/', async (req, res) => {
     res.status(201).json(createdRecipe);
   } catch (err) {
     console.error('Error saving recipe:', err);
-    res.status(400).json({ message: err.message });
+    res.status(400).json({ message: 'Failed to save recipe', error: err.message });
   }
 });
 
