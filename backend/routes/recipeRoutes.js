@@ -1,9 +1,7 @@
-// routes/recipeRoutes.js
-
 const express = require('express');
 const router = express.Router();
+const mongoose = require('mongoose');
 const Recipe = require('../models/Recipe');
-const { restart } = require('nodemon');
 
 // Get all recipes
 router.get('/', async (req, res) => {
@@ -23,15 +21,20 @@ router.post('/', async (req, res) => {
   console.log('Received POST request for /api/recipes', req.body);
   const { name, ingredients, instructions, user } = req.body;
 
+  // Validate that ingredients is an array
+  if (!Array.isArray(ingredients) || ingredients.length === 0) {
+    return res.status(400).json({ message: "Ingredients must be a non-empty array." });
+  }
+
   if (!name || !instructions || !ingredients) {
-    return res.status(400).json({ message: "Name, ingredients, and instructions are required."});
+    return res.status(400).json({ message: "Name, ingredients, and instructions are required." });
   }
 
   const newRecipe = new Recipe({
     name,
     ingredients,
     instructions,
-    user: user || new Mongoose.Types.ObjectId()
+    user: user
   });
 
   try {
