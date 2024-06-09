@@ -7,7 +7,10 @@ const RecipePage = () => {
     // Fetch recipes from backend API
     fetch('http://localhost:5000/api/recipes')
       .then(response => response.json())
-      .then(data => setRecipes(data))
+      .then(data => {
+        console.log('Fetched Recipes:', data);
+        setRecipes(data);
+      })
       .catch(error => console.error('Error fetching recipes:', error));
   }, []); // Empty dependency array to run effect only once
 
