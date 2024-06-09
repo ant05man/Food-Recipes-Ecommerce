@@ -16,7 +16,16 @@ const RecipePage = () => {
       <h1>Recipe Page</h1>
       <ul>
         {recipes.map(recipe => (
-          <li key={recipe._id}>{recipe.name}</li>
+          <li key={recipe._id}>
+            <h3>{recipe.name}</h3>
+            <p>Instructions: {recipe.instructions}</p>
+            <p>Ingredients:</p>
+            <ul>
+              {recipe.ingredients.map((ingredient, index) => (
+                <li key={index}>{ingredient}</li>
+              ))}
+            </ul>
+          </li>
         ))}
       </ul>
     </div>
