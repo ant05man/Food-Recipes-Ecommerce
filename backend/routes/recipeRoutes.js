@@ -34,7 +34,7 @@ router.post('/', async (req, res) => {
     name,
     ingredients,
     instructions,
-    user: user
+    user
   });
 
   try {
