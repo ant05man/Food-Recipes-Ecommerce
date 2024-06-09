@@ -1,7 +1,7 @@
 // Profile.js
 
 import React, { useEffect, useState } from 'react';
-import { fetchUserRecipes } from '../services/recipeService'; // Create this function in your service
+import { getRecipes } from '../services/recipeService'; // Import your recipe service
 
 const Profile = () => {
   const [recipes, setRecipes] = useState([]);
@@ -9,7 +9,7 @@ const Profile = () => {
   useEffect(() => {
     const fetchRecipes = async () => {
       try {
-        const recipes = await fetchUserRecipes();
+        const recipes = await getRecipes();
         setRecipes(recipes);
       } catch (error) {
         console.error('Error fetching recipes:', error);
@@ -24,7 +24,7 @@ const Profile = () => {
       <h1>Profile</h1>
       <h2>Your Recipes</h2>
       <ul>
-        {recipes.map(recipe => (
+        {recipes.map((recipe) => (
           <li key={recipe._id}>
             <h3>{recipe.name}</h3>
             <p>{recipe.instructions}</p>

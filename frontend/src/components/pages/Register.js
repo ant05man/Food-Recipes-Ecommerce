@@ -15,8 +15,7 @@ const Register = () => {
     e.preventDefault();
     setError(''); // Clear previous errors
     try {
-      const userData = await register({ name, email, password });
-      console.log('Registration successful:', userData);
+      await register({ name, email, password });
       navigate('/profile');
     } catch (error) {
       console.error('Error during registration:', error);
