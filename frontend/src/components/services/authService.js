@@ -1,18 +1,18 @@
-import axios from 'axios';
-
-const API_URL = '/api/users';
-
-export const login = async (email, password) => {
-  const response = await axios.post(`${API_URL}/login`, { email, password });
-  return response.data;
-};
+// authService.js
 
 export const register = async (userData) => {
-  const response = await axios.post(`${API_URL}/register`, userData);
-  return response.data;
-};
+  
+  const response = await fetch('http://localhost:5000/api/users/register', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(userData),
+  });
 
-export const logout = async () => {
-  // Implement logout logic here
-};
+  if (!response.ok) {
+    throw new Error('Registration failed');
+  }
 
+  return response.json(); // assuming server responds with user data or token
+};
