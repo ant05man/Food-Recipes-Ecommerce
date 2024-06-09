@@ -16,10 +16,10 @@ const Register = () => {
     setError(''); // Clear previous errors
     try {
       await register({ name, email, password });
-      navigate('/profile');
+      navigate('/profile'); // Redirect to profile page after successful registration
     } catch (error) {
       console.error('Error during registration:', error);
-      setError('Registration failed. Please try again.');
+      setError(error.message || 'Registration failed. Please try again.');
     }
   };
 
@@ -30,15 +30,33 @@ const Register = () => {
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="name">Name:</label>
-          <input id="name" type="text" value={name} onChange={(e) => setName(e.target.value)} autoComplete="name" />
+          <input
+            id="name"
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            autoComplete="name"
+          />
         </div>
         <div>
           <label htmlFor="email">Email:</label>
-          <input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="email" />
+          <input
+            id="email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            autoComplete="email"
+          />
         </div>
         <div>
           <label htmlFor="password">Password:</label>
-          <input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="new-password" />
+          <input
+            id="password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            autoComplete="new-password"
+          />
         </div>
         <button type="submit">Register</button>
       </form>
