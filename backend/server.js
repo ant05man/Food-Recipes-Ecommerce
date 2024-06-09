@@ -1,6 +1,4 @@
-// server.js
-
-const express = require('express');
+onst express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
 const cors = require('cors');
@@ -19,7 +17,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 console.log('Connecting to MongoDB...');
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/FoodRecipesEcommerce', {
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/yourDatabaseName', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
