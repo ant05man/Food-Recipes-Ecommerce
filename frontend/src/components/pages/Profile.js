@@ -1,41 +1,20 @@
 // Profile.js
 
-import React, { useEffect, useState } from 'react';
-import { getRecipes } from '../services/recipeService'; // Import your recipe service
+import React, { useContext } from 'react';
+import { AuthContext } from '../context/AuthContext';
 
 const Profile = () => {
-  const [recipes, setRecipes] = useState([]);
+  const { user } = useContext(AuthContext);
 
-  useEffect(() => {
-    const fetchRecipes = async () => {
-      try {
-        const recipes = await getRecipes();
-        setRecipes(recipes);
-      } catch (error) {
-        console.error('Error fetching recipes:', error);
-      }
-    };
-
-    fetchRecipes();
-  }, []);
+  if (!user) {
+    return <p>Please log in to view your profile.</p>;
+  }
 
   return (
     <div>
-      <h1>Profile</h1>
-      <h2>Your Recipes</h2>
-      <ul>
-        {recipes.map((recipe) => (
-          <li key={recipe._id}>
-            <h3>{recipe.name}</h3>
-            <p>{recipe.instructions}</p>
-            <ul>
-              {recipe.ingredients.map((ingredient, index) => (
-                <li key={index}>{ingredient}</li>
-              ))}
-            </ul>
-          </li>
-        ))}
-      </ul>
+      <h2>Welcome, {user.name}</h2>
+      <p>Email: {user.email}</p>
+      {/* Add more profile details if needed */}
     </div>
   );
 };
