@@ -1,17 +1,24 @@
+// context/AuthContext.js
+
 import React, { createContext, useState } from 'react';
+import { login as loginService } from '../services/authService';
 
-const AuthContext = createContext();
+export const AuthContext = createContext();
 
-const AuthProvider = ({ children }) => {
+export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
-  const login = (userData) => {
-    // Implement your login logic here
-    setUser(userData);
+  const login = async (email, password) => {
+    try {
+      const data = await loginService(email, password);
+      setUser(data); // Assuming data contains user info
+    } catch (error) {
+      console.error('Login failed:', error);
+      throw error;
+    }
   };
 
   const logout = () => {
-    // Implement your logout logic here
     setUser(null);
   };
 
@@ -21,5 +28,3 @@ const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
-
-export { AuthProvider, AuthContext };
