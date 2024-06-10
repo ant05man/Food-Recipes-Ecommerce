@@ -4,7 +4,7 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
-const { authMiddleware } = require('../middleware/authMiddleware');
+const { protect } = require('../middleware/authMiddleware');
 
 // Helper function to generate JWT
 const generateToken = (id) => {
@@ -102,7 +102,7 @@ router.post('/login', async (req, res) => {
 // @route   GET /api/users/profile
 // @desc    Get user profile
 // @access  Private
-router.get('/profile', authMiddleware, async (req, res) => {
+router.get('/profile', protect, async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select('-password'); // Exclude password
     if (!user) {
