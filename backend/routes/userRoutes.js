@@ -1,4 +1,3 @@
-
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
@@ -15,9 +14,9 @@ const generateToken = (id) => {
 // @desc    Register new user
 // @access  Public
 router.post('/register', async (req, res) => {
-  const { name, email, password } = req.body;
+  const { username, email, password } = req.body;
 
-  if (!name || !email || !password) {
+  if (!username || !email || !password) {
     return res.status(400).json({ message: 'All fields are required.' });
   }
 
@@ -34,7 +33,7 @@ router.post('/register', async (req, res) => {
 
     // Create new user
     const user = new User({
-      name,
+      username,
       email,
       password: hashedPassword,
     });
@@ -49,7 +48,7 @@ router.post('/register', async (req, res) => {
       token,
       user: {
         id: newUser._id,
-        name: newUser.name,
+        username: newUser.username,
         email: newUser.email,
       },
     });
@@ -89,7 +88,7 @@ router.post('/login', async (req, res) => {
       token,
       user: {
         id: user._id,
-        name: user.name,
+        username: user.username,
         email: user.email,
       },
     });

@@ -12,7 +12,7 @@ const Profile = () => {
 
   return (
     <div>
-      <h2>Welcome, {user.name}</h2>
+      <h2>Welcome, {user.username}</h2>
       <p>Email: {user.email}</p>
       {/* Add more profile details if needed */}
     </div>

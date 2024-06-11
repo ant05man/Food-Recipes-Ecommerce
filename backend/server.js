@@ -3,6 +3,9 @@ const mongoose = require('mongoose');
 const path = require('path');
 const cors = require('cors');
 require('dotenv').config();
+if (!process.env.JWT_SECRET) {
+  process.env.JWT_SECRET = 'YourSecretKeyHere';
+}
 
 // Import routes
 const recipeRoutes = require('./routes/recipeRoutes');
@@ -23,6 +26,8 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/YourMongo
 })
 .then(() => console.log('MongoDB connected'))
 .catch(err => console.error('MongoDB connection error:', err));
+
+console.log(process.env.JWT_SECRET);
 
 // Routes
 app.use('/api/recipes', recipeRoutes);

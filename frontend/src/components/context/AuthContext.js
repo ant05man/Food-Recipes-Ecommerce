@@ -10,8 +10,9 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const data = await loginService(email, password);
-      setUser(data); // Assuming data contains user info
+      const userData = await loginService(email, password);
+      const userWithEmail = { ...userData, email }; // Include email in the user object
+      setUser(userWithEmail);
     } catch (error) {
       console.error('Login failed:', error);
       throw error;

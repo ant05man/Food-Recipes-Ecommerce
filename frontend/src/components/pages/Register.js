@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { register } from '../services/authService';
 
 const Register = () => {
-  const [name, setName] = useState('');
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -15,7 +15,7 @@ const Register = () => {
     e.preventDefault();
     setError(''); // Clear previous errors
     try {
-      await register({ name, email, password });
+      await register({ username, email, password });
       navigate('/profile'); // Redirect to profile page after successful registration
     } catch (error) {
       console.error('Error during registration:', error);
@@ -29,13 +29,13 @@ const Register = () => {
       {error && <p style={{ color: 'red' }}>{error}</p>}
       <form onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="name">Name:</label>
+          <label htmlFor="username">Username:</label>
           <input
-            id="name"
+            id="username"
             type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            autoComplete="name"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            autoComplete="username"
           />
         </div>
         <div>
