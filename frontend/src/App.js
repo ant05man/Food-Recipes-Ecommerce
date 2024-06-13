@@ -22,7 +22,7 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/create-recipe" element={<CreateRecipePage />} /> {/* Add CreateRecipePage route */}
+          <Route path="/create-recipes" element={<CreateRecipePage />} /> {/* Add CreateRecipePage route */}
         </Routes>
       </Router>
     </AuthProvider>
