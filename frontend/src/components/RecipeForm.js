@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from './context/AuthContext';
 
 const RecipeForm = () => {
   const [name, setName] = useState('');
   const [ingredients, setIngredients] = useState(['']);
   const [instructions, setInstructions] = useState('');
-  const [user, setUser] = useState(''); // Ideally, the user should be obtained from an authenticated context.
+  const { user } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -16,9 +17,9 @@ const RecipeForm = () => {
         name,
         ingredients,
         instructions,
-        user
+        user: user._id // Assuming user is an object with an _id field
       });
-      navigate('/recipes'); // Redirect to recipes list after creation
+      navigate('/recipes');
     } catch (error) {
       console.error('Error creating recipe:', error);
     }
@@ -52,10 +53,6 @@ const RecipeForm = () => {
       <div>
         <label>Instructions:</label>
         <textarea value={instructions} onChange={(e) => setInstructions(e.target.value)} required></textarea>
-      </div>
-      <div>
-        <label>User ID:</label>
-        <input type="text" value={user} onChange={(e) => setUser(e.target.value)} required />
       </div>
       <button type="submit">Create Recipe</button>
     </form>
