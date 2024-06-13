@@ -7,7 +7,6 @@ import RecipeDetailPage from './components/pages/RecipeDetailPage';
 import Login from './components/pages/Login';
 import Register from './components/pages/Register';
 import Profile from './components/pages/Profile';
-import CreateRecipePage from './components/pages/CreateRecipePage'; // Import CreateRecipePage
 import { AuthProvider } from './components/context/AuthContext';
 
 const App = () => {
@@ -22,7 +21,6 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/create-recipes" element={<CreateRecipePage />} /> {/* Add CreateRecipePage route */}
         </Routes>
       </Router>
     </AuthProvider>
