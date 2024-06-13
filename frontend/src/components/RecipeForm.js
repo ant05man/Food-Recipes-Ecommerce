@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-const RecipeForm = ({ onRecipeCreated }) => {
+const RecipeForm = () => {
   const [name, setName] = useState('');
   const [ingredients, setIngredients] = useState(['']);
   const [instructions, setInstructions] = useState('');
@@ -18,7 +18,6 @@ const RecipeForm = ({ onRecipeCreated }) => {
         instructions,
         user
       });
-      onRecipeCreated(response.data);
       navigate('/recipes'); // Redirect to recipes list after creation
     } catch (error) {
       console.error('Error creating recipe:', error);

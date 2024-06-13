@@ -1,5 +1,3 @@
-// App.js
-
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Home from './components/pages/Home';
@@ -8,7 +6,8 @@ import RecipePage from './components/pages/RecipePage';
 import RecipeDetailPage from './components/pages/RecipeDetailPage';
 import Login from './components/pages/Login';
 import Register from './components/pages/Register';
-import Profile from './components/pages/Profile'; // Import Profile component
+import Profile from './components/pages/Profile';
+import CreateRecipePage from './components/pages/CreateRecipePage'; // Import CreateRecipePage
 import { AuthProvider } from './components/context/AuthContext';
 
 const App = () => {
@@ -22,7 +21,8 @@ const App = () => {
           <Route path="/mealplanner" element={<MealPlanner />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/profile" element={<Profile />} /> {/* Add Profile route */}
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/create-recipe" element={<CreateRecipePage />} /> {/* Add CreateRecipePage route */}
         </Routes>
       </Router>
     </AuthProvider>
