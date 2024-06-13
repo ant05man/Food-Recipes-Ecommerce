@@ -16,6 +16,9 @@ const Homepage = () => {
             <Link to="/login">Login</Link>
           </li>
           <li>
+            <Link to="/create-recipes">Create Recipe</Link>
+          </li>
+          <li>
             <Link to="/register">Register</Link>
           </li>
           {/*  more navigation links as needed */}
