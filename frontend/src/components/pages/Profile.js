@@ -6,6 +6,7 @@ import { AuthContext } from '../context/AuthContext';
 const Profile = () => {
   const { user } = useContext(AuthContext);
 
+  console.log('User:', user); // Add this to debug
   if (!user) {
     return <p>Please log in to view your profile.</p>;
   }
