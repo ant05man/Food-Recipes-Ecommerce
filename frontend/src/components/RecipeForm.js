@@ -6,7 +6,7 @@ const RecipeForm = () => {
   const [name, setName] = useState('');
   const [ingredients, setIngredients] = useState(['']);
   const [instructions, setInstructions] = useState('');
-  const [user, setUser] = useState(''); // Ideally, the user should be obtained from an authenticated context.
+  const [user, setUser] = useState(''); // Still handle user for logged-in users
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -16,9 +16,9 @@ const RecipeForm = () => {
         name,
         ingredients,
         instructions,
-        user
+        user: user || undefined // Omit user if it's empty
       });
-      navigate('/recipes'); // Redirect to recipes list after creation
+      navigate('/recipes');
     } catch (error) {
       console.error('Error creating recipe:', error);
     }
@@ -54,8 +54,8 @@ const RecipeForm = () => {
         <textarea value={instructions} onChange={(e) => setInstructions(e.target.value)} required></textarea>
       </div>
       <div>
-        <label>User ID:</label>
-        <input type="text" value={user} onChange={(e) => setUser(e.target.value)} required />
+        <label>User ID (optional):</label>
+        <input type="text" value={user} onChange={(e) => setUser(e.target.value)} />
       </div>
       <button type="submit">Create Recipe</button>
     </form>
