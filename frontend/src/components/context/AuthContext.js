@@ -7,28 +7,26 @@ export const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         const fetchUserProfile = async () => {
-            try {
-                const token = localStorage.getItem('token');
-                if (!token) return;
+            const token = localStorage.getItem('token');
+            if (token) {
+                try {
+                    const response = await fetch('/api/auth/me', {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
 
-                const response = await fetch('/api/auth/me', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
+                    if (response.ok) {
+                        const data = await response.json();
+                        setUser(data);
+                    } else {
+                        throw new Error('Failed to fetch profile');
                     }
-                });
-
-                if (response.ok) {
-                    const data = await response.json();
-                    setUser(data);
-                } else {
-                    const errorData = await response.json();
-                    console.error('Failed to fetch profile:', response.status, errorData);
+                } catch (error) {
+                    console.error('Error fetching profile:', error.message);
                     setUser(null);
                 }
-            } catch (error) {
-                console.error('Error fetching profile:', error);
-                setUser(null);
             }
         };
 
@@ -48,12 +46,14 @@ export const AuthProvider = ({ children }) => {
             if (response.ok) {
                 const { token } = await response.json();
                 localStorage.setItem('token', token);
-                await fetchUserProfile();
+                setUser({ email }); // Assuming user email is sufficient for state
             } else {
-                throw new Error('Authentication failed');
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Authentication failed');
             }
         } catch (error) {
-            throw new Error(error.message);
+            console.error('Login function error:', error.message);
+            throw error;
         }
     };
 
