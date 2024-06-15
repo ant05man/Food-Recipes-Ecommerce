@@ -1,3 +1,4 @@
+// Login.js
 import React, { useState, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -6,13 +7,13 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { login } = useContext(AuthContext);
-  const navigate = useNavigate(); // Using useNavigate hook
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       await login({ email, password });
-      navigate('/profile'); // Navigate to profile page after successful login
+      navigate('/profile');
     } catch (error) {
       console.error('Login failed:', error);
       alert('Login failed. Please check your credentials.');
