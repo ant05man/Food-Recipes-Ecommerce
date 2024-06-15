@@ -4,10 +4,10 @@ const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const { protect } = require('../middleware/authMiddleware');
 const User = require('../models/User');
+const { protect } = require('../middleware/authMiddleware');
 
-// POST /api/auth/register - Register a new user
+// POST /api/auth/register - Register user
 router.post('/register', async (req, res) => {
     const { username, email, password } = req.body;
 

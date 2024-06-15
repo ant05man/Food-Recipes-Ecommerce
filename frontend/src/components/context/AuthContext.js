@@ -1,50 +1,65 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useContext, useEffect } from 'react';
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
-    const [token, setToken] = useState(localStorage.getItem('token'));
 
     useEffect(() => {
         const fetchUserProfile = async () => {
-            if (!token) return;
-
             try {
+                const token = localStorage.getItem('token');
+                if (!token) return;
+
                 const response = await fetch('/api/auth/me', {
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`,
-                    },
+                        'Authorization': `Bearer ${token}`
+                    }
                 });
 
                 if (response.ok) {
                     const data = await response.json();
                     setUser(data);
                 } else {
-                    console.error('Failed to fetch profile');
-                    setToken(null); // Clear token if fetching fails
-                    localStorage.removeItem('token');
+                    const errorData = await response.json();
+                    console.error('Failed to fetch profile:', response.status, errorData);
+                    setUser(null);
                 }
             } catch (error) {
-                console.error('Error:', error);
-                setToken(null);
-                localStorage.removeItem('token');
+                console.error('Error fetching profile:', error);
+                setUser(null);
             }
         };
 
         fetchUserProfile();
-    }, [token]);
+    }, []);
 
-    const login = (token) => {
-        setToken(token);
-        localStorage.setItem('token', token);
+    const login = async ({ email, password }) => {
+        try {
+            const response = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, password }),
+            });
+
+            if (response.ok) {
+                const { token } = await response.json();
+                localStorage.setItem('token', token);
+                await fetchUserProfile();
+            } else {
+                throw new Error('Authentication failed');
+            }
+        } catch (error) {
+            throw new Error(error.message);
+        }
     };
 
     const logout = () => {
-        setToken(null);
-        setUser(null);
         localStorage.removeItem('token');
+        setUser(null);
     };
 
     return (
@@ -53,3 +68,5 @@ export const AuthProvider = ({ children }) => {
         </AuthContext.Provider>
     );
 };
+
+export const useAuth = () => useContext(AuthContext);
