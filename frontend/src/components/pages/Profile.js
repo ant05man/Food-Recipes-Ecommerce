@@ -1,21 +1,49 @@
 // Profile.js
-
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../context/AuthContext';
 
 const Profile = () => {
   const { user } = useContext(AuthContext);
+  const [recipes, setRecipes] = useState([]);
 
-  console.log('User:', user); // Add this to debug
-  if (!user) {
-    return <p>Please log in to view your profile.</p>;
-  }
+  useEffect(() => {
+    const fetchUserRecipes = async () => {
+      if (!user) return;
+
+      try {
+        const response = await fetch(`/api/users/${user._id}/recipes`, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          }
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setRecipes(data);
+        } else {
+          console.error('Failed to fetch recipes');
+        }
+      } catch (error) {
+        console.error('Error fetching recipes:', error);
+      }
+    };
+
+    fetchUserRecipes();
+  }, [user]);
+
+  if (!user) return <p>Loading profile...</p>;
 
   return (
     <div>
-      <h2>Welcome, {user.username}</h2>
+      <h1>Welcome: {user.username}</h1>
       <p>Email: {user.email}</p>
-      {/* Add more profile details if needed */}
+      <h2>Your Selected Recipes:</h2>
+      <ul>
+        {recipes.map(recipe => (
+          <li key={recipe._id}>{recipe.title}</li>
+        ))}
+      </ul>
     </div>
   );
 };
