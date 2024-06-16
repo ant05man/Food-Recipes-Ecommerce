@@ -5,6 +5,7 @@ const bcrypt = require('bcryptjs');
 const User = require('../models/User');
 const Recipe = require('../models/Recipe');
 const { protect } = require('../middleware/authMiddleware');
+const { Mongoose } = require('mongoose');
 
 // POST /api/users/register - Register user
 router.post('/register', async (req, res) => {
@@ -68,6 +69,9 @@ router.post('/:userId/recipes', protect, async (req, res) => {
     const { userId } = req.params;
     const { recipeId } = req.body;
 
+    if (!userId || Mongoose.Types.ObjectId.isValid(userId)) {
+      return res.status(400).json({ message: 'Invalid userId' });
+    }
     try {
         const user = await User.findById(userId);
         if (!user) {

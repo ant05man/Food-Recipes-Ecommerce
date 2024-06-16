@@ -8,28 +8,41 @@ const RecipePage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/recipes')
-      .then(response => response.json())
-      .then(data => {
-        console.log('Fetched Recipes:', data);
-        setRecipes(data);
-      })
-      .catch(error => console.error('Error fetching recipes:', error));
-  }, []);
+    fetchRecipes();
+  }, []); // Fetch recipes on component mount
 
-  const handleSelectRecipe = async (recipeId) => {
-    if (!user) {
+  const fetchRecipes = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/api/recipes');
+      if (!response.ok) {
+        throw new Error('Failed to fetch recipes');
+      }
+      const data = await response.json();
+      console.log('Fetched Recipes:', data);
+      setRecipes(data);
+    } catch (error) {
+      console.error('Error fetching recipes:', error);
+    }
+  };
+
+  const addRecipeToProfile = async (recipeId) => {
+    if (!user || !user._id) {
       alert('You need to be logged in to select recipes');
       navigate('/login');
       return;
     }
 
     try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('No token found');
+      }
+
       const response = await fetch(`http://localhost:5000/api/users/${user._id}/recipes`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify({ recipeId }),
       });
@@ -37,10 +50,11 @@ const RecipePage = () => {
       if (response.ok) {
         alert('Recipe added to profile');
       } else {
-        alert('Failed to add recipe');
+        throw new Error('Failed to add recipe');
       }
     } catch (error) {
       console.error('Error adding recipe:', error);
+      alert('Failed to add recipe');
     }
   };
 
@@ -58,7 +72,7 @@ const RecipePage = () => {
                 <li key={index}>{ingredient}</li>
               ))}
             </ul>
-            <button onClick={() => handleSelectRecipe(recipe._id)}>Select Recipe</button>
+            <button onClick={() => addRecipeToProfile(recipe._id)}>Select Recipe</button>
           </li>
         ))}
       </ul>
