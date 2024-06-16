@@ -1,32 +1,25 @@
-// AuthContext.js
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import React, { createContext, useState, useEffect, useContext } from 'react';
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
-  // Fetch user profile
-  const fetchUserProfile = async (token) => {
-    try {
-      const response = await fetch('/api/auth/me', {
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      // Fetch user data with token
+      fetch('http://localhost:5000/api/auth/me', {
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        }
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setUser(data);
-      } else {
-        throw new Error('Failed to fetch profile');
-      }
-    } catch (error) {
-      console.error('Error fetching profile:', error.message);
-      setUser(null);
+          'Authorization': `Bearer ${token}`,
+        },
+      })
+        .then(response => response.json())
+        .then(data => setUser(data))
+        .catch(() => setUser(null));
     }
-  };
+  }, []);
 
   const login = async ({ email, password }) => {
     try {
@@ -40,29 +33,28 @@ export const AuthProvider = ({ children }) => {
 
       if (response.ok) {
         const { token } = await response.json();
-        localStorage.setItem('token', token);
-        await fetchUserProfile(token); // Fetch profile after login
+        localStorage.setItem('token', token); // Store token in localStorage
+        // Fetch and set user data
+        fetch('http://localhost:5000/api/auth/me', {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+        })
+          .then(response => response.json())
+          .then(data => setUser(data));
       } else {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Authentication failed');
+        throw new Error('Authentication failed');
       }
     } catch (error) {
-      console.error('Login function error:', error.message);
-      throw error;
+      throw new Error(error.message);
     }
   };
 
   const logout = () => {
-    localStorage.removeItem('token');
-    setUser(null);
+    localStorage.removeItem('token'); // Remove token from localStorage
+    setUser(null); // Clear user state
   };
-
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      fetchUserProfile(token); // Fetch profile if token exists
-    }
-  }, []);
 
   return (
     <AuthContext.Provider value={{ user, login, logout }}>
