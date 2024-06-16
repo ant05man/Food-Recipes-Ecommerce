@@ -7,6 +7,7 @@ import RecipeDetailPage from './components/pages/RecipeDetailPage';
 import Login from './components/pages/Login';
 import Register from './components/pages/Register';
 import Profile from './components/pages/Profile';
+import Navbar from './components/pages/Navbar';
 import { AuthProvider } from './components/context/AuthContext';
 
 const App = () => {
