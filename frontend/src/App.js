@@ -14,6 +14,8 @@ const App = () => {
   return (
     <AuthProvider>
       <Router>
+      <Navbar /> {/* Ensure Navbar is here */}
+      <div className="main-content"> {/* Optional container for page content */}
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/recipes" element={<RecipePage />} />
@@ -23,6 +25,7 @@ const App = () => {
           <Route path="/register" element={<Register />} />
           <Route path="/profile" element={<Profile />} />
         </Routes>
+      </div>
       </Router>
     </AuthProvider>
   );
