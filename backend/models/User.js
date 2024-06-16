@@ -1,13 +1,11 @@
-// models/User.js
-
+// User.js (Model)
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-  username: { type: String, required: true },
-  email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-}, { timestamps: true });
+  username: String,
+  email: String,
+  password: String,
+  recipes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Recipe' }] // Add recipes field
+});
 
-const User = mongoose.model('User', userSchema);
-
-module.exports = User;
+module.exports = mongoose.model('User', userSchema);
