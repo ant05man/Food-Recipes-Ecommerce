@@ -8,7 +8,6 @@ const RecipePage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Fetch recipes from backend API
     fetch('http://localhost:5000/api/recipes')
       .then(response => response.json())
       .then(data => {
