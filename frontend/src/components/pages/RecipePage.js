@@ -47,11 +47,11 @@ const RecipePage = () => {
         body: JSON.stringify({ recipeId }),
       });
 
-      if (response.ok) {
-        alert('Recipe added to profile');
-      } else {
+      if (!response.ok) {
         throw new Error('Failed to add recipe');
       }
+
+      alert('Recipe added to profile');
     } catch (error) {
       console.error('Error adding recipe:', error);
       alert('Failed to add recipe');
