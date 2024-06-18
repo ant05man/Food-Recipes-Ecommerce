@@ -60,13 +60,37 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const register = async ({ username, email, password }) => {
+    try {
+      // Perform API call to register user
+      const response = await fetch('http://localhost:5000/api/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, email, password }),
+      });
+
+      if (response.ok) {
+        const { token } = await response.json();
+        localStorage.setItem('token', token); // Store token in localStorage
+        fetchUserDetails(token); // Fetch user details after successful registration
+      } else {
+        throw new Error('Registration failed');
+      }
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  };
+
+
   const logout = () => {
     localStorage.removeItem('token'); // Remove token from localStorage
     setUser(null); // Clear user state
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout, register, logout }}>
       {children}
     </AuthContext.Provider>
   );
