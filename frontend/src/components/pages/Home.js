@@ -1,15 +1,12 @@
-// Homepage.js
-
 import React from 'react';
-import { Link } from 'react-router-dom';
+import '../../styles/Home.css';
 
-const Homepage = () => {
+const Home = () => {
   return (
-    <div>
+    <div className="home-container">
       <h1>Welcome to Food Recipes!</h1>
-  
     </div>
   );
 };
 
-export default Homepage;
+export default Home;

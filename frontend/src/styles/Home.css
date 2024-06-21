@@ -1,0 +1,23 @@
+/* Home.css */
+
+.home-container {
+    background-color: #f19c68; /* Shade of orange */
+    color: white; /* Sky blue */
+    min-height: 100vh; /* Ensure it takes up the full viewport height */
+    display: flex; /* Use flexbox for centering */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    text-align: center; /* Center text */
+    padding: 20px; /* Add padding for content */
+    margin: 0; /* Remove default margin */
+    box-sizing: border-box; /* Ensure padding is included in width/height */
+  }
+  
+  .home-container h1 {
+    font-size: 3rem; /* Adjust font size as needed */
+    font-weight: bold; /* Make text bold */
+    margin: 0; /* Remove margin */
+    box-shadow: 10px 10px 10px rgb(238, 236, 236);
+
+  }
+  
