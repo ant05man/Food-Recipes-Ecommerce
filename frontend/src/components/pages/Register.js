@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import '../../styles/Home.css'; // Use the same CSS as Home for consistent styling
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -31,35 +32,46 @@ const Register = () => {
   };
 
   return (
-    <div>
-      <h1>Register</h1>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="username"
-          placeholder="Username"
-          value={formData.username}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={formData.email}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={formData.password}
-          onChange={handleChange}
-          required
-        />
-        <button type="submit">Register</button>
-      </form>
+    <div className="home-container"> {/* Use the same background style */}
+      <div className="register-content"> {/* Specific styling for register form */}
+        <h1>Register</h1>
+        <form onSubmit={handleSubmit}>
+          <div>
+            <label>Username:</label>
+            <input
+              type="text"
+              name="username"
+              placeholder="Username"
+              value={formData.username}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div>
+            <label>Email:</label>
+            <input
+              type="email"
+              name="email"
+              placeholder="Email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div>
+            <label>Password:</label>
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <button type="submit">Register</button>
+        </form>
+      </div>
     </div>
   );
 };

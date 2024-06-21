@@ -1,0 +1,64 @@
+
+.recipe-container {
+    background-color: #ffcc80; /* Light orange background */
+    color: #87ceeb; /* Sky blue text */
+    min-height: 100vh; /* Full viewport height */
+    display: flex; /* Flexbox for centering */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    text-align: center; /* Center text */
+    padding: 20px; /* Padding around content */
+    box-sizing: border-box; /* Include padding in width/height */
+  }
+  
+  .recipe-content {
+    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+    padding: 20px; /* Padding around content */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+    max-width: 800px; /* Maximum width */
+    width: 100%; /* Full width within the container */
+    box-sizing: border-box; /* Include padding in width */
+    color: #000; /* Black text for readability */
+  }
+  
+  .recipe-list {
+    list-style-type: none; /* Remove default list styling */
+    padding: 0; /* Remove default padding */
+  }
+  
+  .recipe-item {
+    background-color: #fff; /* White background for items */
+    border: 1px solid #ddd; /* Border around items */
+    border-radius: 5px; /* Rounded corners */
+    padding: 15px; /* Padding inside items */
+    margin-bottom: 15px; /* Space between items */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  }
+  
+  .recipe-item h3 {
+    color: #87ceeb; /* Sky blue headings */
+    margin-top: 0; /* Remove default margin */
+  }
+  
+  .recipe-item ul {
+    list-style-type: disc; /* Bullet points for ingredients */
+    padding-left: 20px; /* Indent bullet points */
+    margin: 0; /* Remove default margin */
+  }
+  
+  .recipe-item button {
+    background-color: #87ceeb; /* Sky blue button */
+    color: white; /* White text */
+    border: none; /* Remove border */
+    border-radius: 5px; /* Rounded corners */
+    padding: 10px; /* Padding inside button */
+    font-size: 1rem; /* Font size */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease; /* Smooth transition */
+  }
+  
+  .recipe-item button:hover {
+    background-color: #1e90ff; /* Slightly darker blue on hover */
+  }
+  

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import '../../styles/RecipePage.css'; // Import the CSS file
 
 const RecipePage = () => {
   const [recipes, setRecipes] = useState([]);
@@ -59,23 +60,25 @@ const RecipePage = () => {
   };
 
   return (
-    <div>
-      <h1>Recipe Page</h1>
-      <ul>
-        {recipes.map(recipe => (
-          <li key={recipe._id}>
-            <h3>{recipe.name}</h3>
-            <p>Instructions: {recipe.instructions}</p>
-            <p>Ingredients:</p>
-            <ul>
-              {recipe.ingredients.map((ingredient, index) => (
-                <li key={index}>{ingredient}</li>
-              ))}
-            </ul>
-            <button onClick={() => addRecipeToProfile(recipe._id)}>Select Recipe</button>
-          </li>
-        ))}
-      </ul>
+    <div className="recipe-container"> {/* Apply background and styling */}
+      <div className="recipe-content"> {/* Content styling */}
+        <h1>Recipe Page</h1>
+        <ul className="recipe-list">
+          {recipes.map(recipe => (
+            <li key={recipe._id} className="recipe-item">
+              <h3>{recipe.name}</h3>
+              <p>Instructions: {recipe.instructions}</p>
+              <p>Ingredients:</p>
+              <ul>
+                {recipe.ingredients.map((ingredient, index) => (
+                  <li key={index}>{ingredient}</li>
+                ))}
+              </ul>
+              <button onClick={() => addRecipeToProfile(recipe._id)}>Select Recipe</button>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 };
