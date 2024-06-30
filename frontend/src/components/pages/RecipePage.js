@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import '../../styles/RecipePage.css'; // Import the CSS file
+import '../../styles/RecipePage.css';
 
 const RecipePage = () => {
   const [recipes, setRecipes] = useState([]);
   const { user } = useAuth();
   const navigate = useNavigate();
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     fetchRecipes();
@@ -14,7 +15,7 @@ const RecipePage = () => {
 
   const fetchRecipes = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/recipes');
+      const response = await fetch(`${apiUrl}/api/recipes`);
       if (!response.ok) {
         throw new Error('Failed to fetch recipes');
       }
@@ -39,7 +40,7 @@ const RecipePage = () => {
         throw new Error('No token found');
       }
 
-      const response = await fetch(`http://localhost:5000/api/users/${user._id}/recipes`, {
+      const response = await fetch(`${apiUrl}/api/users/${user._id}/recipes`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
