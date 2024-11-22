@@ -1,36 +1,32 @@
-// AuthContext.js
-
 import React, { createContext, useState, useContext, useEffect } from 'react';
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [error, setError] = useState(null);
+
+  const API_URL = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
-    // Check localStorage for token and set user if token exists
     const token = localStorage.getItem('token');
     if (token) {
-      // Assuming fetchUserDetails fetches user details from backend based on token
       fetchUserDetails(token);
     }
   }, []);
 
   const fetchUserDetails = async (token) => {
     try {
-      // Make a request to your backend to fetch user details using the token
-      const response = await fetch('http://localhost:5000/api/auth/me', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+      const response = await fetch(`${API_URL}/auth/me`, {
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       if (response.ok) {
         const userData = await response.json();
-        setUser(userData); // Set the user state with fetched user data
+        setUser(userData);
       } else {
-        setUser(null); // Clear user state if token is invalid or user not found
-        localStorage.removeItem('token'); // Remove invalid token from localStorage
+        setUser(null);
+        localStorage.removeItem('token');
       }
     } catch (error) {
       console.error('Error fetching user details:', error);
@@ -39,58 +35,57 @@ export const AuthProvider = ({ children }) => {
 
   const login = async ({ email, password }) => {
     try {
-      // Perform API call to authenticate user
-      const response = await fetch('http://localhost:5000/api/auth/login', {
+      const response = await fetch(`${API_URL}/auth/login`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
       });
 
       if (response.ok) {
         const { token } = await response.json();
-        localStorage.setItem('token', token); // Store token in localStorage
-        fetchUserDetails(token); // Fetch user details after successful login
+        localStorage.setItem('token', token);
+        fetchUserDetails(token);
       } else {
-        throw new Error('Authentication failed');
+        const errorData = await response.json();
+        setError(errorData.message);
+        throw new Error(errorData.message);
       }
     } catch (error) {
+      setError(error.message);
       throw new Error(error.message);
     }
   };
 
   const register = async ({ username, email, password }) => {
     try {
-      // Perform API call to register user
-      const response = await fetch('http://localhost:5000/api/auth/register', {
+      const response = await fetch(`${API_URL}/auth/register`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, email, password }),
       });
 
       if (response.ok) {
         const { token } = await response.json();
-        localStorage.setItem('token', token); // Store token in localStorage
-        fetchUserDetails(token); // Fetch user details after successful registration
+        localStorage.setItem('token', token);
+        fetchUserDetails(token);
       } else {
-        throw new Error('Registration failed');
+        const errorData = await response.json();
+        setError(errorData.message);
+        throw new Error(errorData.message);
       }
     } catch (error) {
+      setError(error.message);
       throw new Error(error.message);
     }
   };
 
-
   const logout = () => {
-    localStorage.removeItem('token'); // Remove token from localStorage
-    setUser(null); // Clear user state
+    localStorage.removeItem('token');
+    setUser(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, register, }}>
+    <AuthContext.Provider value={{ user, login, logout, register, error }}>
       {children}
     </AuthContext.Provider>
   );
