@@ -9,6 +9,7 @@ const Register = () => {
     email: '',
     password: '',
   });
+  const [errorMessage, setErrorMessage] = useState(''); // State to store error message
   const { register } = useAuth();
   const navigate = useNavigate();
 
@@ -21,13 +22,26 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Client-side validation for email and password
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      setErrorMessage('Invalid email format');
+      return;
+    }
+
+    if (formData.password.length < 6) {
+      setErrorMessage('Password must be at least 6 characters');
+      return;
+    }
+
     try {
       await register(formData); // Pass formData directly to register function
       alert('Registration successful!');
       navigate('/'); // Redirect to home or dashboard after successful registration
     } catch (error) {
       console.error('Registration failed:', error);
-      alert('Failed to register');
+      setErrorMessage(error.message || 'Failed to register');
     }
   };
 
@@ -35,6 +49,10 @@ const Register = () => {
     <div className="home-container"> {/* Use the same background style */}
       <div className="register-content"> {/* Specific styling for register form */}
         <h1>Register</h1>
+        
+        {/* Display error message if any */}
+        {errorMessage && <div className="error-message">{errorMessage}</div>}
+
         <form onSubmit={handleSubmit}>
           <div>
             <label>Username:</label>
